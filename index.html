@@ -1,519 +1,1300 @@
 <!DOCTYPE html>
 <html lang="id">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <title>MASTERBUS - Management System</title>
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>MASTERBUS — Management System</title>
 
     <style>
+
+        /* =====================================================
+           RESET
+        ===================================================== */
+
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
-            font-family: Arial, Helvetica, sans-serif;
+        }
+
+        :root {
+
+            --bg: #05070d;
+
+            --card: rgba(15, 23, 42, 0.62);
+
+            --border: rgba(255,255,255,0.08);
+
+            --text: #f8fafc;
+
+            --muted: #94a3b8;
+
+            --blue: #3b82f6;
+
+            --cyan: #06b6d4;
+
+            --purple: #8b5cf6;
+
+        }
+
+        html {
+            scroll-behavior: smooth;
         }
 
         body {
+
             min-height: 100vh;
+
             background:
-                radial-gradient(circle at top left, #1e40af33, transparent 35%),
-                radial-gradient(circle at bottom right, #2563eb22, transparent 35%),
-                #0b1120;
-            color: #ffffff;
+
+                radial-gradient(
+                    circle at 10% 10%,
+                    rgba(59,130,246,0.18),
+                    transparent 30%
+                ),
+
+                radial-gradient(
+                    circle at 90% 20%,
+                    rgba(139,92,246,0.15),
+                    transparent 30%
+                ),
+
+                radial-gradient(
+                    circle at 50% 100%,
+                    rgba(6,182,212,0.10),
+                    transparent 35%
+                ),
+
+                var(--bg);
+
+            color: var(--text);
+
+            font-family:
+                Inter,
+                ui-sans-serif,
+                system-ui,
+                -apple-system,
+                BlinkMacSystemFont,
+                "Segoe UI",
+                sans-serif;
+
+            overflow-x: hidden;
         }
+
+
+        /* =====================================================
+           AMBIENT LIGHT
+        ===================================================== */
+
+        body::before {
+
+            content: "";
+
+            position: fixed;
+
+            width: 500px;
+            height: 500px;
+
+            top: -250px;
+            left: -150px;
+
+            background:
+                radial-gradient(
+                    circle,
+                    rgba(59,130,246,0.20),
+                    transparent 70%
+                );
+
+            filter: blur(50px);
+
+            pointer-events: none;
+
+            animation: floatLight 10s ease-in-out infinite;
+        }
+
+
+        body::after {
+
+            content: "";
+
+            position: fixed;
+
+            width: 450px;
+            height: 450px;
+
+            right: -200px;
+            bottom: -200px;
+
+            background:
+                radial-gradient(
+                    circle,
+                    rgba(139,92,246,0.18),
+                    transparent 70%
+                );
+
+            filter: blur(60px);
+
+            pointer-events: none;
+
+            animation: floatLight 12s ease-in-out infinite reverse;
+        }
+
+
+        @keyframes floatLight {
+
+            0%,
+            100% {
+                transform: translate(0,0);
+            }
+
+            50% {
+                transform: translate(40px,30px);
+            }
+
+        }
+
+
+        /* =====================================================
+           GRID BACKGROUND
+        ===================================================== */
+
+        .grid-bg {
+
+            position: fixed;
+
+            inset: 0;
+
+            pointer-events: none;
+
+            opacity: 0.15;
+
+            background-image:
+
+                linear-gradient(
+                    rgba(255,255,255,0.025) 1px,
+                    transparent 1px
+                ),
+
+                linear-gradient(
+                    90deg,
+                    rgba(255,255,255,0.025) 1px,
+                    transparent 1px
+                );
+
+            background-size: 50px 50px;
+
+            mask-image:
+                linear-gradient(
+                    to bottom,
+                    black,
+                    transparent 85%
+                );
+        }
+
+
+        /* =====================================================
+           MAIN CONTAINER
+        ===================================================== */
 
         .container {
+
             width: 100%;
-            max-width: 1200px;
+
+            max-width: 1180px;
+
             margin: auto;
-            padding: 40px 25px;
+
+            padding:
+                28px 24px
+                60px;
+
+            position: relative;
+
+            z-index: 2;
         }
 
-        /* =========================
-           HEADER
-        ========================= */
 
-        .header {
+        /* =====================================================
+           NAVBAR
+        ===================================================== */
+
+        .navbar {
+
             display: flex;
+
             justify-content: space-between;
+
             align-items: center;
-            margin-bottom: 70px;
+
+            margin-bottom: 80px;
         }
+
 
         .brand {
+
             display: flex;
+
             align-items: center;
-            gap: 14px;
+
+            gap: 13px;
         }
+
 
         .logo {
+
             width: 48px;
+
             height: 48px;
+
             border-radius: 14px;
-            background: #ffffff;
+
+            background: rgba(255,255,255,0.96);
+
             display: flex;
+
             align-items: center;
+
             justify-content: center;
+
             overflow: hidden;
-            box-shadow: 0 10px 30px #2563eb44;
+
+            border: 1px solid rgba(255,255,255,0.2);
+
+            box-shadow:
+
+                0 0 30px rgba(59,130,246,0.20),
+
+                inset 0 0 20px rgba(255,255,255,0.3);
         }
 
+
         .logo img {
+
             width: 100%;
+
             height: 100%;
+
             object-fit: contain;
+
             padding: 5px;
         }
 
+
         .brand-text h1 {
-            font-size: 20px;
-            letter-spacing: 1px;
+
+            font-size: 16px;
+
+            font-weight: 800;
+
+            letter-spacing: 1.5px;
         }
+
 
         .brand-text p {
-            font-size: 12px;
-            color: #94a3b8;
+
             margin-top: 3px;
+
+            color: #64748b;
+
+            font-size: 11px;
+
+            letter-spacing: 0.5px;
         }
 
-        .status {
+
+        /* =====================================================
+           SYSTEM STATUS
+        ===================================================== */
+
+        .system-status {
+
             display: flex;
+
             align-items: center;
-            gap: 8px;
-            padding: 8px 14px;
-            background: #111827;
-            border: 1px solid #1e293b;
-            border-radius: 20px;
-            font-size: 12px;
+
+            gap: 9px;
+
+            padding: 9px 14px;
+
+            border-radius: 999px;
+
+            background:
+                rgba(15,23,42,0.65);
+
+            border:
+                1px solid rgba(255,255,255,0.08);
+
+            backdrop-filter: blur(15px);
+
             color: #94a3b8;
+
+            font-size: 11px;
+
+            font-weight: 600;
+
+            letter-spacing: 0.5px;
         }
+
 
         .status-dot {
-            width: 8px;
-            height: 8px;
-            background: #22c55e;
+
+            width: 7px;
+
+            height: 7px;
+
             border-radius: 50%;
-            box-shadow: 0 0 10px #22c55e;
+
+            background: #22c55e;
+
+            box-shadow:
+                0 0 8px #22c55e,
+                0 0 18px rgba(34,197,94,0.5);
+
+            animation: pulse 2s infinite;
         }
 
-        /* =========================
+
+        @keyframes pulse {
+
+            0% {
+                box-shadow:
+                    0 0 5px #22c55e;
+            }
+
+            50% {
+                box-shadow:
+                    0 0 12px #22c55e,
+                    0 0 25px rgba(34,197,94,0.5);
+            }
+
+            100% {
+                box-shadow:
+                    0 0 5px #22c55e;
+            }
+
+        }
+
+
+        /* =====================================================
            HERO
-        ========================= */
+        ===================================================== */
 
         .hero {
-            margin-bottom: 45px;
+
+            text-align: center;
+
+            max-width: 800px;
+
+            margin:
+                0 auto
+                75px;
         }
 
-        .hero span {
+
+        .hero-badge {
+
+            display: inline-flex;
+
+            align-items: center;
+
+            gap: 8px;
+
+            padding: 7px 13px;
+
+            border-radius: 999px;
+
+            background:
+                rgba(59,130,246,0.08);
+
+            border:
+                1px solid rgba(59,130,246,0.20);
+
             color: #60a5fa;
-            font-size: 14px;
-            font-weight: bold;
-            letter-spacing: 1px;
+
+            font-size: 10px;
+
+            font-weight: 800;
+
+            letter-spacing: 1.5px;
+
+            text-transform: uppercase;
+
+            margin-bottom: 25px;
         }
+
+
+        .hero-badge span {
+
+            width: 5px;
+
+            height: 5px;
+
+            background: #3b82f6;
+
+            border-radius: 50%;
+
+            box-shadow:
+                0 0 8px #3b82f6;
+        }
+
 
         .hero h2 {
-            margin-top: 10px;
-            font-size: clamp(32px, 5vw, 52px);
-            line-height: 1.1;
+
+            font-size:
+                clamp(
+                    42px,
+                    7vw,
+                    76px
+                );
+
+            line-height: 0.98;
+
+            font-weight: 850;
+
+            letter-spacing: -3px;
+
+            margin-bottom: 25px;
         }
+
+
+        .gradient-text {
+
+            background:
+                linear-gradient(
+                    90deg,
+                    #ffffff 10%,
+                    #60a5fa 45%,
+                    #a78bfa 75%,
+                    #ffffff
+                );
+
+            background-size: 200% auto;
+
+            -webkit-background-clip: text;
+
+            background-clip: text;
+
+            color: transparent;
+
+            animation:
+                gradientMove 5s linear infinite;
+        }
+
+
+        @keyframes gradientMove {
+
+            to {
+                background-position:
+                    200% center;
+            }
+
+        }
+
 
         .hero p {
-            margin-top: 16px;
-            max-width: 600px;
-            color: #94a3b8;
-            line-height: 1.7;
-            font-size: 15px;
-        }
 
-        /* =========================
-           APPLICATION GRID
-        ========================= */
+            max-width: 570px;
 
-        .section-title {
-            font-size: 14px;
+            margin: auto;
+
             color: #64748b;
-            margin-bottom: 18px;
-            text-transform: uppercase;
-            letter-spacing: 1px;
+
+            font-size: 14px;
+
+            line-height: 1.8;
         }
+
+
+        /* =====================================================
+           APP HEADER
+        ===================================================== */
+
+        .apps-header {
+
+            display: flex;
+
+            justify-content: space-between;
+
+            align-items: end;
+
+            margin-bottom: 18px;
+        }
+
+
+        .apps-title {
+
+            color: #64748b;
+
+            font-size: 10px;
+
+            font-weight: 800;
+
+            text-transform: uppercase;
+
+            letter-spacing: 2px;
+        }
+
+
+        .apps-count {
+
+            color: #475569;
+
+            font-size: 11px;
+        }
+
+
+        /* =====================================================
+           APPLICATION GRID
+        ===================================================== */
 
         .apps {
+
             display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 20px;
+
+            grid-template-columns:
+                repeat(3, 1fr);
+
+            gap: 16px;
         }
 
+
+        /* =====================================================
+           APPLICATION CARD
+        ===================================================== */
+
         .app-card {
+
             position: relative;
-            overflow: hidden;
 
-            background: linear-gradient(
-                145deg,
-                #111827,
-                #0f172a
-            );
-
-            border: 1px solid #1e293b;
-            border-radius: 18px;
+            min-height: 330px;
 
             padding: 25px;
 
+            border-radius: 24px;
+
+            overflow: hidden;
+
             text-decoration: none;
+
             color: white;
 
-            transition: all 0.25s ease;
+            background:
+                linear-gradient(
+                    145deg,
+                    rgba(15,23,42,0.82),
+                    rgba(7,12,24,0.75)
+                );
 
-            min-height: 230px;
+            border:
+                1px solid
+                rgba(255,255,255,0.075);
 
-            display: flex;
-            flex-direction: column;
-            justify-content: space-between;
+            backdrop-filter:
+                blur(20px);
+
+            transition:
+                transform 0.35s cubic-bezier(.2,.8,.2,1),
+                border-color 0.35s ease,
+                box-shadow 0.35s ease;
         }
 
-        .app-card::before {
-            content: "";
-            position: absolute;
-            width: 150px;
-            height: 150px;
 
-            background: #2563eb22;
+        .app-card::before {
+
+            content: "";
+
+            position: absolute;
+
+            width: 220px;
+
+            height: 220px;
 
             border-radius: 50%;
 
-            top: -70px;
-            right: -70px;
+            top: -110px;
 
-            filter: blur(20px);
+            right: -90px;
+
+            background:
+                radial-gradient(
+                    circle,
+                    rgba(59,130,246,0.22),
+                    transparent 70%
+                );
+
+            transition:
+                transform 0.5s ease;
         }
+
+
+        .app-card::after {
+
+            content: "";
+
+            position: absolute;
+
+            inset: 0;
+
+            background:
+                linear-gradient(
+                    120deg,
+                    transparent 20%,
+                    rgba(255,255,255,0.035),
+                    transparent 80%
+                );
+
+            transform:
+                translateX(-100%);
+
+            transition:
+                transform 0.6s ease;
+
+            pointer-events: none;
+        }
+
 
         .app-card:hover {
-            transform: translateY(-6px);
-            border-color: #2563eb;
-            box-shadow: 0 20px 50px #00000055;
+
+            transform:
+                translateY(-9px);
+
+            border-color:
+                rgba(96,165,250,0.35);
+
+            box-shadow:
+
+                0 25px 70px
+                rgba(0,0,0,0.45),
+
+                0 0 35px
+                rgba(59,130,246,0.08);
         }
+
+
+        .app-card:hover::before {
+
+            transform:
+                scale(1.4);
+        }
+
+
+        .app-card:hover::after {
+
+            transform:
+                translateX(100%);
+        }
+
+
+        /* =====================================================
+           APP ICON
+        ===================================================== */
+
+        .app-top {
+
+            display: flex;
+
+            justify-content: space-between;
+
+            align-items: start;
+        }
+
 
         .app-icon {
-            width: 52px;
-            height: 52px;
 
-            border-radius: 14px;
+            width: 58px;
+
+            height: 58px;
+
+            border-radius: 18px;
 
             display: flex;
+
             align-items: center;
+
             justify-content: center;
 
-            background: #2563eb22;
-            border: 1px solid #2563eb44;
+            font-size: 25px;
 
-            font-size: 24px;
+            background:
+                linear-gradient(
+                    145deg,
+                    rgba(59,130,246,0.16),
+                    rgba(59,130,246,0.04)
+                );
+
+            border:
+                1px solid
+                rgba(96,165,250,0.18);
+
+            box-shadow:
+                inset 0 1px 0
+                rgba(255,255,255,0.08);
         }
 
-        .app-info {
-            margin-top: 20px;
+
+        .app-number {
+
+            color: #334155;
+
+            font-size: 12px;
+
+            font-weight: 800;
+
+            letter-spacing: 1px;
         }
 
-        .app-info h3 {
-            font-size: 20px;
-            margin-bottom: 8px;
+
+        /* =====================================================
+           APP CONTENT
+        ===================================================== */
+
+        .app-content {
+
+            margin-top: 55px;
         }
 
-        .app-info p {
-            font-size: 13px;
-            color: #94a3b8;
-            line-height: 1.6;
+
+        .app-content h3 {
+
+            font-size: 21px;
+
+            font-weight: 750;
+
+            letter-spacing: -0.5px;
+
+            margin-bottom: 10px;
         }
 
-        .open {
-            margin-top: 20px;
 
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-
-            font-size: 13px;
-            color: #60a5fa;
-            font-weight: bold;
-        }
-
-        .arrow {
-            font-size: 18px;
-            transition: transform 0.2s ease;
-        }
-
-        .app-card:hover .arrow {
-            transform: translateX(5px);
-        }
-
-        /* =========================
-           FOOTER
-        ========================= */
-
-        footer {
-            margin-top: 70px;
-            padding-top: 25px;
-
-            border-top: 1px solid #1e293b;
-
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
+        .app-content p {
 
             color: #64748b;
+
             font-size: 12px;
+
+            line-height: 1.7;
+
+            max-width: 250px;
         }
 
-        /* =========================
-           RESPONSIVE
-        ========================= */
 
-        @media (max-width: 850px) {
+        /* =====================================================
+           LAUNCH
+        ===================================================== */
+
+        .launch {
+
+            position: absolute;
+
+            bottom: 23px;
+
+            left: 25px;
+
+            right: 25px;
+
+            display: flex;
+
+            justify-content: space-between;
+
+            align-items: center;
+
+            color: #60a5fa;
+
+            font-size: 11px;
+
+            font-weight: 800;
+
+            text-transform: uppercase;
+
+            letter-spacing: 1px;
+        }
+
+
+        .launch-arrow {
+
+            width: 32px;
+
+            height: 32px;
+
+            border-radius: 50%;
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: center;
+
+            background:
+                rgba(59,130,246,0.08);
+
+            border:
+                1px solid
+                rgba(59,130,246,0.15);
+
+            transition:
+                transform 0.3s ease,
+                background 0.3s ease;
+        }
+
+
+        .app-card:hover .launch-arrow {
+
+            transform:
+                translateX(5px);
+
+            background:
+                rgba(59,130,246,0.18);
+        }
+
+
+        /* =====================================================
+           FOOTER
+        ===================================================== */
+
+        footer {
+
+            margin-top: 70px;
+
+            padding-top: 25px;
+
+            border-top:
+                1px solid
+                rgba(255,255,255,0.06);
+
+            display: flex;
+
+            justify-content: space-between;
+
+            color: #334155;
+
+            font-size: 10px;
+
+            letter-spacing: 0.5px;
+        }
+
+
+        .footer-right {
+
+            color: #475569;
+        }
+
+
+        /* =====================================================
+           RESPONSIVE
+        ===================================================== */
+
+        @media (max-width: 900px) {
 
             .apps {
-                grid-template-columns: 1fr;
+
+                grid-template-columns:
+                    1fr 1fr;
             }
 
-            .header {
-                margin-bottom: 50px;
-            }
-
-            footer {
-                flex-direction: column;
-                gap: 10px;
-                text-align: center;
-            }
         }
 
-        @media (max-width: 500px) {
+
+        @media (max-width: 650px) {
 
             .container {
-                padding: 25px 18px;
+
+                padding:
+                    22px 17px
+                    45px;
             }
 
-            .status {
+
+            .navbar {
+
+                margin-bottom: 60px;
+            }
+
+
+            .system-status {
+
                 display: none;
             }
 
-            .hero h2 {
-                font-size: 34px;
+
+            .hero {
+
+                margin-bottom: 55px;
             }
+
+
+            .hero h2 {
+
+                font-size: 44px;
+
+                letter-spacing: -2px;
+            }
+
+
+            .apps {
+
+                grid-template-columns: 1fr;
+            }
+
+
+            .app-card {
+
+                min-height: 290px;
+            }
+
+
+            footer {
+
+                flex-direction: column;
+
+                gap: 8px;
+
+                text-align: center;
+            }
+
         }
+
     </style>
+
 </head>
+
 
 <body>
 
-<div class="container">
 
-    <!-- HEADER -->
+    <!-- BACKGROUND GRID -->
 
-    <header class="header">
-
-        <div class="brand">
-
-        <div class="logo">
-            <img src="https://i.vgy.me/oGNauj.png" alt="MasterBus Logo">
-        </div>
-
-            <div class="brand-text">
-                <h1>MASTERBUS</h1>
-                <p>Management System</p>
-                <p>Created by Fahral 2026</p>
-            </div>
-
-        </div>
-
-        <div class="status">
-
-            <span class="status-dot"></span>
-
-            System Online
-
-        </div>
-
-    </header>
+    <div class="grid-bg"></div>
 
 
-    <!-- HERO -->
-
-    <section class="hero">
-
-        <span>MASTERBUS MANAGEMENT SYSTEM</span>
-
-        <h2>
-            Selamat Datang 👋
-        </h2>
-
-        <p>
-            Pilih aplikasi yang ingin kamu akses.
-            Semua sistem MasterBus dapat diakses melalui
-            satu portal.
-        </p>
-
-    </section>
+    <main class="container">
 
 
-    <!-- APPLICATIONS -->
+        <!-- =================================================
+             NAVBAR
+        ================================================== -->
 
-    <div class="section-title">
-        Applications
-    </div>
-
-
-    <div class="apps">
+        <nav class="navbar">
 
 
-        <!-- PAYROLL -->
+            <div class="brand">
 
-        <a
-            class="app-card"
-            href="https://mistermocay.github.io/masterbus-payroll/"
-        >
 
-            <div>
+                <div class="logo">
 
-                <div class="app-icon">
-                    💰
+                    <img
+                        src="https://i.vgy.me/oGNauj.png"
+                        alt="MasterBus Logo"
+                    >
+
                 </div>
 
-                <div class="app-info">
 
-                    <h3>
-                        Master Bus Payroll
-                    </h3>
+                <div class="brand-text">
+
+                    <h1>
+                        MASTERBUS
+                    </h1>
 
                     <p>
-                        Sistem pengelolaan absensi,
-                        uang makan, lembur dan
-                        slip gaji.
+                        Management System
                     </p>
 
                 </div>
 
-            </div>
-
-            <div class="open">
-
-                <span>
-                    Buka Aplikasi
-                </span>
-
-                <span class="arrow">
-                    →
-                </span>
 
             </div>
 
-        </a>
+
+            <div class="system-status">
+
+                <span class="status-dot"></span>
+
+                SYSTEM ONLINE
+
+            </div>
 
 
-        <!-- GUDANG -->
+        </nav>
 
-        <a
-            class="app-card"
-            href="https://mistermocay.github.io/masterbus-gudang/"
-        >
 
-            <div>
 
-                <div class="app-icon">
-                    📦
+        <!-- =================================================
+             HERO
+        ================================================== -->
+
+        <section class="hero">
+
+
+            <div class="hero-badge">
+
+                <span></span>
+
+                MASTERBUS MANAGEMENT SYSTEM
+
+            </div>
+
+
+            <h2>
+
+                Everything you need.
+                <br>
+
+                <span class="gradient-text">
+                    In one place.
+                </span>
+
+            </h2>
+
+
+            <p>
+
+                Satu portal untuk mengakses seluruh
+                sistem operasional MasterBus.
+                Pilih aplikasi yang ingin kamu gunakan
+                dan langsung mulai bekerja.
+
+            </p>
+
+
+        </section>
+
+
+
+        <!-- =================================================
+             APPLICATIONS
+        ================================================== -->
+
+        <div class="apps-header">
+
+            <div class="apps-title">
+                Applications
+            </div>
+
+            <div class="apps-count">
+                03 Systems Available
+            </div>
+
+        </div>
+
+
+
+        <section class="apps">
+
+
+            <!-- =============================================
+                 PAYROLL
+            ============================================== -->
+
+            <a
+                href="https://mistermocay.github.io/masterbus-payroll/"
+                class="app-card"
+            >
+
+
+                <div class="app-top">
+
+
+                    <div class="app-icon">
+                        💰
+                    </div>
+
+
+                    <div class="app-number">
+                        01
+                    </div>
+
+
                 </div>
 
-                <div class="app-info">
+
+                <div class="app-content">
 
                     <h3>
-                        Master Bus Gudang
+                        MasterBus Payroll
                     </h3>
 
                     <p>
-                        Sistem pengelolaan stok,
-                        barang masuk, barang keluar
-                        dan master barang.
+
+                        Kelola absensi,
+                        uang makan,
+                        lembur,
+                        hingga slip gaji
+                        dalam satu sistem.
+
                     </p>
 
                 </div>
 
-            </div>
 
-            <div class="open">
+                <div class="launch">
 
-                <span>
-                    Buka Aplikasi
-                </span>
+                    <span>
+                        Launch Application
+                    </span>
 
-                <span class="arrow">
-                    →
-                </span>
+                    <span class="launch-arrow">
+                        →
+                    </span>
 
-            </div>
-
-        </a>
-
-
-        <!-- MANAGE UNIT -->
-
-        <a
-            class="app-card"
-            href="https://mistermocay.github.io/masterbus-manageunit/"
-        >
-
-            <div>
-
-                <div class="app-icon">
-                    🚍
                 </div>
 
-                <div class="app-info">
+
+            </a>
+
+
+
+            <!-- =============================================
+                 GUDANG
+            ============================================== -->
+
+            <a
+                href="https://mistermocay.github.io/masterbus-gudang/"
+                class="app-card"
+            >
+
+
+                <div class="app-top">
+
+
+                    <div class="app-icon">
+                        📦
+                    </div>
+
+
+                    <div class="app-number">
+                        02
+                    </div>
+
+
+                </div>
+
+
+                <div class="app-content">
 
                     <h3>
-                        Master Bus Manage Unit
+                        MasterBus Gudang
                     </h3>
 
                     <p>
-                        Sistem pengelolaan unit kendaraan,
-                        nomor rangka, nomor mesin,
-                        customer dan dokumen unit.
+
+                        Kelola master barang,
+                        stok,
+                        barang masuk,
+                        dan barang keluar.
+
                     </p>
 
                 </div>
 
-            </div>
 
-            <div class="open">
+                <div class="launch">
 
-                <span>
-                    Buka Aplikasi
-                </span>
+                    <span>
+                        Launch Application
+                    </span>
 
-                <span class="arrow">
-                    →
-                </span>
+                    <span class="launch-arrow">
+                        →
+                    </span>
 
-            </div>
-
-        </a>
+                </div>
 
 
-    </div>
+            </a>
 
 
-    <!-- FOOTER -->
 
-    <footer>
+            <!-- =============================================
+                 MANAGE UNIT
+            ============================================== -->
 
-        <span>
-            © 2026 MASTERBUS Management System
-            Created by Fahral
-        </span>
+            <a
+                href="https://mistermocay.github.io/masterbus-manageunit/"
+                class="app-card"
+            >
 
-        <span>
-            v1.0
-        </span>
 
-    </footer>
+                <div class="app-top">
 
-</div>
+
+                    <div class="app-icon">
+                        🚌
+                    </div>
+
+
+                    <div class="app-number">
+                        03
+                    </div>
+
+
+                </div>
+
+
+                <div class="app-content">
+
+                    <h3>
+                        MasterBus Manage Unit
+                    </h3>
+
+                    <p>
+
+                        Kelola unit kendaraan,
+                        nomor rangka,
+                        nomor mesin,
+                        customer,
+                        dan dokumen unit.
+
+                    </p>
+
+                </div>
+
+
+                <div class="launch">
+
+                    <span>
+                        Launch Application
+                    </span>
+
+                    <span class="launch-arrow">
+                        →
+                    </span>
+
+                </div>
+
+
+            </a>
+
+
+        </section>
+
+
+
+        <!-- =================================================
+             FOOTER
+        ================================================== -->
+
+        <footer>
+
+            <span>
+                © 2026 MASTERBUS MANAGEMENT SYSTEM
+            </span>
+
+
+            <span class="footer-right">
+                Designed & Developed by Fahral · v1.0
+            </span>
+
+        </footer>
+
+
+    </main>
+
 
 </body>
 </html>
