@@ -1,0 +1,511 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>MASTERBUS - Management System</title>
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: Arial, Helvetica, sans-serif;
+        }
+
+        body {
+            min-height: 100vh;
+            background:
+                radial-gradient(circle at top left, #1e40af33, transparent 35%),
+                radial-gradient(circle at bottom right, #2563eb22, transparent 35%),
+                #0b1120;
+            color: #ffffff;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 1200px;
+            margin: auto;
+            padding: 40px 25px;
+        }
+
+        /* =========================
+           HEADER
+        ========================= */
+
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 70px;
+        }
+
+        .brand {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+        }
+
+        .logo {
+            width: 48px;
+            height: 48px;
+            border-radius: 14px;
+            background: linear-gradient(135deg, #2563eb, #3b82f6);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            font-size: 20px;
+            box-shadow: 0 10px 30px #2563eb44;
+        }
+
+        .brand-text h1 {
+            font-size: 20px;
+            letter-spacing: 1px;
+        }
+
+        .brand-text p {
+            font-size: 12px;
+            color: #94a3b8;
+            margin-top: 3px;
+        }
+
+        .status {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 8px 14px;
+            background: #111827;
+            border: 1px solid #1e293b;
+            border-radius: 20px;
+            font-size: 12px;
+            color: #94a3b8;
+        }
+
+        .status-dot {
+            width: 8px;
+            height: 8px;
+            background: #22c55e;
+            border-radius: 50%;
+            box-shadow: 0 0 10px #22c55e;
+        }
+
+        /* =========================
+           HERO
+        ========================= */
+
+        .hero {
+            margin-bottom: 45px;
+        }
+
+        .hero span {
+            color: #60a5fa;
+            font-size: 14px;
+            font-weight: bold;
+            letter-spacing: 1px;
+        }
+
+        .hero h2 {
+            margin-top: 10px;
+            font-size: clamp(32px, 5vw, 52px);
+            line-height: 1.1;
+        }
+
+        .hero p {
+            margin-top: 16px;
+            max-width: 600px;
+            color: #94a3b8;
+            line-height: 1.7;
+            font-size: 15px;
+        }
+
+        /* =========================
+           APPLICATION GRID
+        ========================= */
+
+        .section-title {
+            font-size: 14px;
+            color: #64748b;
+            margin-bottom: 18px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .apps {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 20px;
+        }
+
+        .app-card {
+            position: relative;
+            overflow: hidden;
+
+            background: linear-gradient(
+                145deg,
+                #111827,
+                #0f172a
+            );
+
+            border: 1px solid #1e293b;
+            border-radius: 18px;
+
+            padding: 25px;
+
+            text-decoration: none;
+            color: white;
+
+            transition: all 0.25s ease;
+
+            min-height: 230px;
+
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+
+        .app-card::before {
+            content: "";
+            position: absolute;
+            width: 150px;
+            height: 150px;
+
+            background: #2563eb22;
+
+            border-radius: 50%;
+
+            top: -70px;
+            right: -70px;
+
+            filter: blur(20px);
+        }
+
+        .app-card:hover {
+            transform: translateY(-6px);
+            border-color: #2563eb;
+            box-shadow: 0 20px 50px #00000055;
+        }
+
+        .app-icon {
+            width: 52px;
+            height: 52px;
+
+            border-radius: 14px;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            background: #2563eb22;
+            border: 1px solid #2563eb44;
+
+            font-size: 24px;
+        }
+
+        .app-info {
+            margin-top: 20px;
+        }
+
+        .app-info h3 {
+            font-size: 20px;
+            margin-bottom: 8px;
+        }
+
+        .app-info p {
+            font-size: 13px;
+            color: #94a3b8;
+            line-height: 1.6;
+        }
+
+        .open {
+            margin-top: 20px;
+
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+
+            font-size: 13px;
+            color: #60a5fa;
+            font-weight: bold;
+        }
+
+        .arrow {
+            font-size: 18px;
+            transition: transform 0.2s ease;
+        }
+
+        .app-card:hover .arrow {
+            transform: translateX(5px);
+        }
+
+        /* =========================
+           FOOTER
+        ========================= */
+
+        footer {
+            margin-top: 70px;
+            padding-top: 25px;
+
+            border-top: 1px solid #1e293b;
+
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+
+            color: #64748b;
+            font-size: 12px;
+        }
+
+        /* =========================
+           RESPONSIVE
+        ========================= */
+
+        @media (max-width: 850px) {
+
+            .apps {
+                grid-template-columns: 1fr;
+            }
+
+            .header {
+                margin-bottom: 50px;
+            }
+
+            footer {
+                flex-direction: column;
+                gap: 10px;
+                text-align: center;
+            }
+        }
+
+        @media (max-width: 500px) {
+
+            .container {
+                padding: 25px 18px;
+            }
+
+            .status {
+                display: none;
+            }
+
+            .hero h2 {
+                font-size: 34px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="container">
+
+    <!-- HEADER -->
+
+    <header class="header">
+
+        <div class="brand">
+
+            <div class="logo">
+                MB
+            </div>
+
+            <div class="brand-text">
+                <h1>MASTERBUS</h1>
+                <p>Management System</p>
+            </div>
+
+        </div>
+
+        <div class="status">
+
+            <span class="status-dot"></span>
+
+            System Online
+
+        </div>
+
+    </header>
+
+
+    <!-- HERO -->
+
+    <section class="hero">
+
+        <span>MASTERBUS MANAGEMENT SYSTEM</span>
+
+        <h2>
+            Selamat Datang 👋
+        </h2>
+
+        <p>
+            Pilih aplikasi yang ingin kamu akses.
+            Semua sistem MasterBus dapat diakses melalui
+            satu portal.
+        </p>
+
+    </section>
+
+
+    <!-- APPLICATIONS -->
+
+    <div class="section-title">
+        Applications
+    </div>
+
+
+    <div class="apps">
+
+
+        <!-- PAYROLL -->
+
+        <a
+            class="app-card"
+            href="https://mistermocay.github.io/masterbus-payroll/"
+        >
+
+            <div>
+
+                <div class="app-icon">
+                    💰
+                </div>
+
+                <div class="app-info">
+
+                    <h3>
+                        MasterBus Payroll
+                    </h3>
+
+                    <p>
+                        Sistem pengelolaan absensi,
+                        uang makan, lembur dan
+                        slip gaji.
+                    </p>
+
+                </div>
+
+            </div>
+
+            <div class="open">
+
+                <span>
+                    Buka Aplikasi
+                </span>
+
+                <span class="arrow">
+                    →
+                </span>
+
+            </div>
+
+        </a>
+
+
+        <!-- GUDANG -->
+
+        <a
+            class="app-card"
+            href="https://mistermocay.github.io/masterbus-gudang/"
+        >
+
+            <div>
+
+                <div class="app-icon">
+                    📦
+                </div>
+
+                <div class="app-info">
+
+                    <h3>
+                        MasterBus Gudang
+                    </h3>
+
+                    <p>
+                        Sistem pengelolaan stok,
+                        barang masuk, barang keluar
+                        dan master barang.
+                    </p>
+
+                </div>
+
+            </div>
+
+            <div class="open">
+
+                <span>
+                    Buka Aplikasi
+                </span>
+
+                <span class="arrow">
+                    →
+                </span>
+
+            </div>
+
+        </a>
+
+
+        <!-- MANAGE UNIT -->
+
+        <a
+            class="app-card"
+            href="https://mistermocay.github.io/masterbus-manageunit/"
+        >
+
+            <div>
+
+                <div class="app-icon">
+                    🚍
+                </div>
+
+                <div class="app-info">
+
+                    <h3>
+                        MasterBus Manage Unit
+                    </h3>
+
+                    <p>
+                        Sistem pengelolaan unit kendaraan,
+                        nomor rangka, nomor mesin,
+                        customer dan dokumen unit.
+                    </p>
+
+                </div>
+
+            </div>
+
+            <div class="open">
+
+                <span>
+                    Buka Aplikasi
+                </span>
+
+                <span class="arrow">
+                    →
+                </span>
+
+            </div>
+
+        </a>
+
+
+    </div>
+
+
+    <!-- FOOTER -->
+
+    <footer>
+
+        <span>
+            © 2026 MASTERBUS Management System
+        </span>
+
+        <span>
+            v1.0
+        </span>
+
+    </footer>
+
+</div>
+
+</body>
+</html>
